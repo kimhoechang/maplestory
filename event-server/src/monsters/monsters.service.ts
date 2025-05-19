@@ -21,21 +21,23 @@ export class MonstersService {
   }
 
   async defeatMonster(userId: string, monsterName: string, eventId: string): Promise<string> {
-    // 1. 몬스터 처치 저장
-    await this.monsterModel.create({ userId, name: monsterName });
+    // 1. 몬스터 처치 저장 (eventId 포함)
+    await this.monsterModel.create({ userId, name: monsterName, eventId });
 
-    // 2. 유저의 해당 이벤트 몬스터 수 계산
-    const count = await this.monsterModel.countDocuments({ userId });
+    // 2. 유저가 해당 이벤트에서 처치한 몬스터 수 계산
+    const count = await this.monsterModel.countDocuments({ userId, eventId });
 
-    // 3. 10마리째면 보상 발급
+    // 3. 10마리째면 보상 발급 (중복 체크 포함)
     if (count === 10) {
-      await this.rewardModel.create({
-        userId,
-        eventId,
-        title: 'Boss Slayer',
-        // status, requestedAt 은 default 값 사용됨
-      });
-      return 'Monster defeated. 🎉 Reward granted!';
+      const existingReward = await this.rewardModel.findOne({ userId, eventId, title: 'Boss Slayer' });
+      if (!existingReward) {
+        await this.rewardModel.create({
+          userId,
+          eventId,
+          title: 'Boss Slayer',
+        });
+        return 'Monster defeated. 🎉 Reward granted!';
+      }
     }
 
     return 'Monster defeated.';

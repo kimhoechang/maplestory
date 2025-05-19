@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/maplestory'),
+    MongooseModule.forRoot(process.env.MONGO_URI as string),
     PassportModule,
     JwtModule.registerAsync({
     imports: [ConfigModule],

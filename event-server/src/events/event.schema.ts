@@ -23,6 +23,9 @@ export class Event extends Document {
 
   @Prop({ required: true })
   creatorId: string;
+
+  @Prop({ default: true })
+  isActive: boolean;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
