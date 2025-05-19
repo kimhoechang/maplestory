@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  auth-server:
+    build: ./auth-server
+    container_name: auth-server
+    ports:
+      - '3001:3001'
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/maplestory
+      - JWT_SECRET=myjwtsecretkey123
+    depends_on:
+      - mongo
+
+  gateway-server:
+    build: ./gateway-server
+    container_name: gateway-server
+    ports:
+      - '3000:3000'
+    environment:
+      - AUTH_SERVICE_URL=http://auth-server:3001
+    depends_on:
+      - auth-server
+
+  event-server:
+    build: ./event-server
+    container_name: event-server
+    ports:
+      - '3002:3002'
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/maplestory
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:

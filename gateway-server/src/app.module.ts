@@ -7,7 +7,7 @@ import { HttpModule } from '@nestjs/axios';
 
 import { AppController } from './app.controller';
 import { TestController } from './test.controller';
-import { GatewayService } from './app.service';  // GatewayService가 app.service.ts에 정의된 경우 이렇게 import
+import { GatewayService } from './app.service'; 
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -21,9 +21,9 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
-    HttpModule, // HttpModule 꼭 추가
+    HttpModule,
   ],
   controllers: [AppController, TestController],
-  providers: [GatewayService, JwtStrategy],  // AppService는 필요 없으면 삭제
+  providers: [GatewayService, JwtStrategy],
 })
 export class AppModule {}

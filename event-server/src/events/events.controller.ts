@@ -13,13 +13,14 @@ export class EventsController {
 
   // ✅ OPERATOR,ADMIN만 이벤트 등록 가능
   @Post()
-@Roles(Role.OPERATOR, Role.ADMIN)
-create(@Request() req, @Body() eventData: Partial<Event>) {
-  return this.eventsService.create({
-    ...eventData,
-    creatorId: req.user.userId,
-  });
-}
+  @Roles(Role.OPERATOR, Role.ADMIN)
+  create(@Request() req, @Body() eventData: Partial<Event>) {
+    return this.eventsService.create({
+      ...eventData,
+      creatorId: req.user.userId,
+      isActive: eventData.isActive ?? true,
+    });
+  }
 
   // ✅ 전체 유저가 목록 조회 가능
   @Get()
