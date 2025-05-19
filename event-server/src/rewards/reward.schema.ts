@@ -12,6 +12,15 @@ export class Reward extends Document {
   @Prop({ required: true })
   title: string;
 
+  @Prop({ required: true })
+  type: 'point' | 'item' | 'coupon';
+
+  @Prop({ required: true })
+  quantity: number;
+
+  @Prop({ type: Object })
+  metadata?: Record<string, any>;
+
   @Prop({ default: 'PENDING' })
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
 

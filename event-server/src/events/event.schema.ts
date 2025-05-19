@@ -4,25 +4,25 @@ import { Document } from 'mongoose';
 @Schema()
 export class Event extends Document {
   @Prop({ required: true })
-  name: string;
+  title: string;
+
+  @Prop()
+  description?: string;
+
+  @Prop()
+  condition?: string;
+
+  @Prop({ required: true, enum: ['ACTIVE', 'INACTIVE'], default: 'INACTIVE' })
+  status: 'ACTIVE' | 'INACTIVE';
 
   @Prop({ required: true })
-  description: string;
+  startDate: Date;
 
   @Prop({ required: true })
-  condition: string; // 예: "몬스터 10마리 처치"
+  endDate: Date;
 
   @Prop({ required: true })
-  rewardTitle: string;
-
-  @Prop({ required: true })
-  startAt: Date;
-
-  @Prop({ required: true })
-  endAt: Date;
-  
-  @Prop({ required: true })
-creatorId: string;
+  creatorId: string;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
