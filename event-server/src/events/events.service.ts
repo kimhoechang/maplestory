@@ -9,8 +9,8 @@ export class EventsService {
     @InjectModel(Event.name) private eventModel: Model<Event>,
   ) {}
 
-  async create(eventData: Partial<Event>): Promise<Event> {
-    const created = new this.eventModel(eventData);
+  async create(data: Partial<Event>): Promise<Event> {
+    const created = new this.eventModel(data);
     return created.save();
   }
 
